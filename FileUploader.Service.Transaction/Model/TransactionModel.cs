@@ -11,7 +11,8 @@ namespace FileUploader.Service.Transaction.Model
         {
             Id = submission.Id.ToString();
             Status = submission.TransactionStatus.ToString();
-            FilesCount = submission.Files.Count;
+            FilesCount = submission.Files != null ? submission.Files.Count : 0;
+            ExpectedFilesCount = submission.ExpectedFilesCount;
         }
 
         public string Id { get; private set; }
@@ -19,5 +20,7 @@ namespace FileUploader.Service.Transaction.Model
         public string Status { get; private set; }
 
         public int FilesCount { get; private set; }
+
+        public int ExpectedFilesCount { get; private set; }
     }
 }

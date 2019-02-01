@@ -77,7 +77,7 @@ namespace FileUploader.Service.Transaction.Services
                 var transactionExists = context.Transactions.Any(s => s.Id.ToString() == fileUploadInfo.TransactionId);
                 if(transactionExists)
                 {
-                    context.Files.Add(new Data.File {  Path = fileUploadInfo.FilePath, TransactionId = Guid.Parse(fileUploadInfo.TransactionId) });
+                    context.Files.Add(new File {  Path = fileUploadInfo.FilePath, TransactionId = Guid.Parse(fileUploadInfo.TransactionId) });
                 }
                 else
                 {

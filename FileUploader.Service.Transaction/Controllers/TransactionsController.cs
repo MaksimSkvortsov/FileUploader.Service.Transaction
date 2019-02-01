@@ -11,13 +11,13 @@ namespace FileUploader.Service.Transaction.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubmissionsController : ControllerBase
+    public class TransactionsController : ControllerBase
     {
-        private readonly ILogger<SubmissionsController> _logger;
+        private readonly ILogger<TransactionsController> _logger;
         private readonly DataContext _dataContext;
 
 
-        public SubmissionsController(ILogger<SubmissionsController> logger, DataContext dataContext)
+        public TransactionsController(ILogger<TransactionsController> logger, DataContext dataContext)
         {
             _logger = logger;
             _dataContext = dataContext;
