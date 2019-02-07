@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FileUploader.Service.Transaction.Data;
 using FileUploader.Service.Transaction.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileUploader.Service.Transaction.Controllers
 {
@@ -27,8 +28,8 @@ namespace FileUploader.Service.Transaction.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<TransactionModel>> Get()
         {
-            _logger.LogInformation("Submissions.get called");
-            return _dataContext.Transactions.Select(s => new TransactionModel(s)).ToList();
+            return _dataContext.Transactions.Include(t => t.Files).Select(s => new TransactionModel(s)).ToList();
+                
         }
 
         [HttpPost]

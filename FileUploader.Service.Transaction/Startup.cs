@@ -31,9 +31,11 @@ namespace FileUploader.Service.Transaction
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddApplicationInsightsTelemetry(Configuration);
+
             //message bus
             var messageBusConfig = Configuration.GetConnectionString("ServiceBus");
-            services.AddSingleton<IServiceBus>(new AzureServiceBus(messageBusConfig, "transaction-service"));
+            services.AddSingleton<IServiceBus>(new AzureServiceBus(messageBusConfig, "transactions-service"));
 
             //database
             var connection = Configuration.GetConnectionString("Database");
@@ -41,11 +43,16 @@ namespace FileUploader.Service.Transaction
 
             //background file processing
             services.AddHostedService<FileProcessSerivce>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Information);
+
+            Console.WriteLine("test");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,7 +62,7 @@ namespace FileUploader.Service.Transaction
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             app.UseCors(builder => { builder.AllowAnyOrigin(); builder.AllowAnyMethod(); builder.AllowAnyHeader(); });
             app.UseHttpsRedirection();
             app.UseMvc();

@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using FileUploader.Service.Transaction.Data;
 using FileUploader.Service.Transaction.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +40,7 @@ namespace FileUploader.Service.Transaction.Services
 
         private async Task ProcessMessage(string message, CancellationToken token)
         {
-            _logger.LogInformation("ProcessMessage. File received " + message);
+            _logger.LogInformation("TransactionService. ProcessMessage. File received {0}", message);
 
             FileUploadInfo uploadInfo = null;
             try
@@ -50,22 +49,22 @@ namespace FileUploader.Service.Transaction.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ProcessMessage. Deserialization failed for file " + message);
+                _logger.LogError(ex, "TransactionService. ProcessMessage. Deserialization failed for file {0}", message);
             }
 
 
-            _logger.LogInformation("ProcessMessage. File parsed. Message " + message);
+            _logger.LogInformation("TransactionService. ProcessMessage. File parsed. Message {0}", message);
 
             try
             {
                 await AddFileToTransaction(uploadInfo);
             }
-            catch(InvalidOperationException ex)
+            catch(Exception ex)
             {
-                _logger.LogError(ex, "Add file information failed", new { UploadInfo = uploadInfo });
+                _logger.LogError(ex, "TransactionService. ProcessMessage. Add file information failed", new { UploadInfo = uploadInfo });
             }            
 
-            _logger.LogInformation("ProcessMessage. Completed. Message: " + message);
+            _logger.LogInformation("TransactionService. ProcessMessage. Completed. Message: {0}", message);
         }
 
         private async Task AddFileToTransaction(FileUploadInfo fileUploadInfo)

@@ -19,6 +19,6 @@ namespace FileUploader.Service.Transaction.Data
 
         public int ExpectedFilesCount { get; set; }
 
-        public ICollection<File> Files { get; set; }
+        public virtual ICollection<File> Files { get; set; }
     }
 }
